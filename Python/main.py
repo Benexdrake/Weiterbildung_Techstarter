@@ -1,1 +1,3 @@
-print("Hello World")
+msg:str = "Hello World"
+
+print(f"{msg}")
