@@ -20,6 +20,12 @@ def add_item():
 #### False: Ausgabe der Shoppingliste per print
 ## Erstelle einen Pull Request auf Github und pull lokal
 
+def show_shopping_list():
+    if len(shoppingList) == 0:
+        print("Deine Einkaufsliste ist leer")
+    else:
+        for item,i in shoppingList:
+            print(f"{i}: {item}")
 
 # 3. Erstelle einen branch namens feature/add-main-function
 ## Erstelle eine main Methode
