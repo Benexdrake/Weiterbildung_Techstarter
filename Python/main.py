@@ -28,9 +28,18 @@ def price_to_tax(price:int|float):
     result = price * 1.19
     print(f"Price with Tax: {result}")
 
+test = []
+test.append(aufgabe1("BeneX","Drake",False))
+test.append(aufgabe2(10,3))
+test.append(celsius_to_fahrenheit(25))
+test.append(celsius_to_fahrenheit(10))
+test.append(price_to_tax(10))
 
-aufgabe1("BeneX","Drake",False)
-aufgabe2(10,3)
-celsius_to_fahrenheit(25)
-celsius_to_fahrenheit(10)
-price_to_tax(10)
+for t in test:
+    t
+
+# aufgabe1("BeneX","Drake",False)
+# aufgabe2(10,3)
+# celsius_to_fahrenheit(25)
+# celsius_to_fahrenheit(10)
+# price_to_tax(10)
