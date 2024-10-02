@@ -8,6 +8,10 @@ shoppingList = []
 ### print Artikel der Liste hinzugefügt
 ### Erstelle einen Pull Request auf Github und pull lokal
 
+def add_item():
+    item = input("Bitte gib den Artikel ein, der zur Einkaufsliste hinzugefügt werden soll")
+    shoppingList.append(item)
+    print(f"Wurde der Liste hinzugefügt: {item}")
 
 # 2. Erstelle einen branch namens feature/add-show-shoppinglist-function
 ## Erweitere das Script mit der Methode show_shoppinglist
