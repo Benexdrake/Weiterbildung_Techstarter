@@ -9,7 +9,7 @@ shoppingList = []
 ### Erstelle einen Pull Request auf Github und pull lokal
 
 def add_item():
-    item = input("Bitte gib den Artikel ein, der zur Einkaufsliste hinzugefügt werden soll")
+    item = input("Bitte gib den Artikel ein, der zur Einkaufsliste hinzugefügt werden soll: ")
     shoppingList.append(item)
     print(f"Wurde der Liste hinzugefügt: {item}")
 
@@ -24,8 +24,8 @@ def show_shopping_list():
     if len(shoppingList) == 0:
         print("Deine Einkaufsliste ist leer")
     else:
-        for item,i in shoppingList:
-            print(f"{i}: {item}")
+        for item in shoppingList:
+            print(f"{item}")
 
 # 3. Erstelle einen branch namens feature/add-main-function
 ## Erstelle eine main Methode
@@ -42,6 +42,26 @@ def show_shopping_list():
 #### 3 break oder return zum abbrechen des progamms
 #### else print fehlermeldung
 ## Erstelle einen Pull Request auf Github und pull lokal danach
+
+def main():
+    while True:
+        print("----- Einkaufsliste -----")
+        print("1. Artikel zur Einkaufsliste hinzufügen")
+        print("2. Einkaufsliste anzeigen")
+        print("3. Programm beenden")
+
+        select = input("Wähle bitte zwischen 1-3 aus:")
+        match select:
+            case "1":
+                add_item()
+            case "2": 
+                show_shopping_list()
+            case "3":
+                print("Programm wird beendet")
+                return
+            case _:
+                print("Was war an 1-3 unverständlich?")
+        
 
 
 # 4. Erstelle einen branch namens feature/add-automatic-run-function
