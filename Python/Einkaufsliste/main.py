@@ -67,3 +67,6 @@ def main():
 # 4. Erstelle einen branch namens feature/add-automatic-run-function
 ## Füge eine if abfrage für __name == "__main__" hinzu und rufe dort main() auf
 ## Erstelle einen Pull Request auf Github und einen pull lokal
+
+if __name__ == "__main__":
+    main()
