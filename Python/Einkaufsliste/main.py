@@ -68,5 +68,9 @@ def main():
 ## Füge eine if abfrage für __name == "__main__" hinzu und rufe dort main() auf
 ## Erstelle einen Pull Request auf Github und einen pull lokal
 
+from einkaufsliste import Einkaufsliste
+
 if __name__ == "__main__":
-    main()
+    #main()
+    einkauf = Einkaufsliste()
+    einkauf.start()
