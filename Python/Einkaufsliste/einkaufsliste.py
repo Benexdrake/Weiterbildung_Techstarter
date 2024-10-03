@@ -1,9 +1,7 @@
 class Einkaufsliste:
 
-    __shoppingList = []
-    
     def __init__(self):
-        pass
+        self.__shoppingList = []
 
     def add_item(self):
         item = input("Bitte gib den Artikel ein, der zur Einkaufsliste hinzugefügt werden soll: ")
