@@ -22,7 +22,7 @@ class Einkaufsliste:
             print("2. Einkaufsliste anzeigen")
             print("3. Programm beenden")
 
-            select = input("Wähle bitte zwischen 1-3 aus:")
+            select = input("Wähle bitte zwischen 1-3 aus: ")
             match select:
                 case "1":
                     self.add_item()
