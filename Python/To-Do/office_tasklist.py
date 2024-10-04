@@ -21,20 +21,22 @@ class OfficeTasklist:
                     try:
                         date_entered = datetime.datetime.strptime(date_input, '%Y-%m-%d').date()
                         self.__todoList.append({"task":task, "date": date_entered})
-                        print(self.__todoList)
                         return
                     except:
                         print("Please enter a real Date")
                         
-            
-        
-
     # Feature 2 show tasklist
     
     ## 1. Prüfe, ob die Liste leer ist. Wenn ja, gib den Text „Deine Aufgabenliste ist leer“ aus. 
     ## 2. Wenn die Liste nicht leer ist, drucke alle Aufgaben mit einer `for`-Schleife. 
     ## 3. Gib auch das Fälligkeitsdatum (falls vorhanden) mit aus. 
 
+    def show_tasklist(self):
+        if not self.__todoList:
+            print("Nothing to see here!")
+        else:
+            for index,todo in enumerate(self.__todoList):
+                print(f'ID: {index+1}\t| Task: {todo["task"]}\t | Date: {todo["date"]}')
 
     # Feature 3 Main Menu
     
