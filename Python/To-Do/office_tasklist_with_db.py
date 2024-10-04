@@ -21,13 +21,13 @@ class OfficeTasklist_DB:
             if task:
                 while True:
                     date_input = input("Please enter a Date in YYYY-MM-DD format: ")
-                    try:
-                        date_entered = datetime.datetime.strptime(date_input, '%Y-%m-%d').date()
+                    date = self.check_date(date_input)
+                    if date != "":
+                        date_entered = date
                         self.cursor.execute(f'''INSERT INTO todo (task, date) VALUES ("{task}","{date_entered}")''')
                         self.conn.commit()
                         return
-                    except:
-                        print("Please enter a real Date")
+                    
 
     # Read            
     def show_tasklist(self):
@@ -44,20 +44,73 @@ class OfficeTasklist_DB:
     
     # Update
     
+    def update_task(self):
+        while True:
+            try:
+                task_id = int(input("Enter ID or just Enter for exit"))
+                self.cursor.execute(f"SELECT * FROM todo WHERE id == {task_id}")
+                todo = self.cursor.fetchone()
+                print(f'ID: {todo[0]}\t| Task: {todo[1]}\t | Date: {todo[2]}')
+                
+                new_task = todo[1]
+                new_date = todo[2]
+                
+                choice = input("Change Task Description? y/n: ")
+                if choice == "y":
+                    choice = ""
+                    new_task = input("Please enter a new Task Description: ")
+                    
+                choice = input("Change Task Date? y/n: ")
+                if choice == "y":
+                    while True:
+                        date_input = input("Please enter a Date in YYYY-MM-DD format: ")
+                        date = self.check_date(date_input)
+                        if date != "":
+                            new_date = date
+                            break
+                print({new_task, new_date})
+                self.cursor.execute(f'''UPDATE todo SET task = "{new_task}", date = "{new_date}" where id == {task_id}''')
+                self.conn.commit()
+                return
+            except:
+                print("Back to Main Menu")
+                return
+    
+    
     # Delete
+    
+    def delete_task(self):
+        pass
+    
     
     def start(self):
         while True:
             print("1. Create Task")
             print("2. Show all Tasks")
-            print("3. Exit")
-            choice = input("Please enter 1,2 or 3: ")
-            if choice == "1":
-                self.add_task()
-            elif choice == "2":
-                self.show_tasklist()
-            elif choice == "3":
-                self.conn.close()
-                return
-            else:
-                print("Error, wrong Choice, please enter again!")
+            print("3. Update a Task by ID")
+            print("4. Delete a Task by ID")
+            print("5. Exit")
+            
+            choice = input("Please enter 1, 2, 3, 4 or 5: ")
+            
+            match choice:
+                case "1":
+                    self.add_task()
+                case "2":
+                    self.show_tasklist()
+                case "3":
+                    self.update_task()
+                case "4":
+                    self.delete_task()
+                case "5":
+                    return
+                case _:
+                    print("Error, wrong Choice, please enter again!")
+                    
+                    
+    def check_date(self, date_input):
+        try:
+            return datetime.datetime.strptime(date_input, '%Y-%m-%d').date()
+        except:
+            print("Please enter a real Date")
+            return ""
