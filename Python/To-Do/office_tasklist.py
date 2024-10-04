@@ -43,3 +43,18 @@ class OfficeTasklist:
     ## 1. Erstelle eine `while`-Schleife, die den User fragt, ob er eine Aufgabe hinzufügen, 
     # die Liste anzeigen oder das Programm beenden möchte. 
     ## 2. Nutze eine `if/elif`-Bedingung, um die Eingabe des Users zu verarbeiten. 
+    
+    def start(self):
+        while True:
+            print("1. Create Task")
+            print("2. Show all Tasks")
+            print("3. Exit")
+            choice = input("Please enter 1,2 or 3: ")
+            if choice == "1":
+                self.add_task()
+            elif choice == "2":
+                self.show_tasklist()
+            elif choice == "3":
+                return
+            else:
+                print("Error, wrong Choice, please enter again!")
