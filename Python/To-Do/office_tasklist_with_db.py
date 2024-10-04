@@ -89,9 +89,6 @@ class OfficeTasklist_DB:
                 if choice == "y":
                     self.cursor.execute(f'''delete from todo where id == {task_id}''')
                     self.conn.commit()
-                
-            
-            
         except:
             print("Back to Main Menu")
             return
