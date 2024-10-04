@@ -43,7 +43,6 @@ class OfficeTasklist_DB:
     
     
     # Update
-    
     def update_task(self):
         while True:
             try:
@@ -78,9 +77,24 @@ class OfficeTasklist_DB:
     
     
     # Delete
-    
     def delete_task(self):
-        pass
+        try:
+            task_id = int(input("Enter ID or just Enter for exit"))
+            self.cursor.execute(f"SELECT * FROM todo WHERE id == {task_id}")
+            todo = self.cursor.fetchone()
+            print(f'ID: {todo[0]}\t| Task: {todo[1]}\t | Date: {todo[2]}')
+            choice = input("Delete this Task? y/n: ")
+            if choice == "y":
+                choice = input("Are u sure? y/n: ")
+                if choice == "y":
+                    self.cursor.execute(f'''delete from todo where id == {task_id}''')
+                    self.conn.commit()
+                
+            
+            
+        except:
+            print("Back to Main Menu")
+            return
     
     
     def start(self):
