@@ -1,11 +1,20 @@
 import datetime
 import sqlite3
 
-class OfficeTasklist:
+class OfficeTasklist_DB:
     
     def __init__(self):
-        self.__todoList = []
+        self.conn = sqlite3.connect('todo_list.db')
+        self.cursor = self.conn.cursor()
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS Todo
+                            (  
+                                id INTEGER PRIMARY KEY,
+                                task varchar(128),
+                                date DATE
+                            );
+                            ''')
 
+    # Create
     def add_task(self):
         while True:
             task = input("Please enter a Task: ")
@@ -14,17 +23,28 @@ class OfficeTasklist:
                     date_input = input("Please enter a Date in YYYY-MM-DD format: ")
                     try:
                         date_entered = datetime.datetime.strptime(date_input, '%Y-%m-%d').date()
-                        self.__todoList.append({"task":task, "date": date_entered})
+                        self.cursor.execute(f'''INSERT INTO todo (task, date) VALUES ("{task}","{date_entered}")''')
+                        self.conn.commit()
                         return
                     except:
                         print("Please enter a real Date")
-                        
+
+    # Read            
     def show_tasklist(self):
-        if not self.__todoList:
+        self.cursor.execute("SELECT * FROM todo")
+        results = self.cursor.fetchall()
+        if len(results) == 0:
             print("Nothing to see here!")
         else:
-            for index,todo in enumerate(self.__todoList):
-                print(f'ID: {index+1}\t| Task: {todo["task"]}\t | Date: {todo["date"]}')
+            pass
+            for todo in results:
+                print(f'ID: {todo[0]}\t| Task: {todo[1]}\t | Date: {todo[2]}')
+        print("")
+    
+    
+    # Update
+    
+    # Delete
     
     def start(self):
         while True:
@@ -37,6 +57,7 @@ class OfficeTasklist:
             elif choice == "2":
                 self.show_tasklist()
             elif choice == "3":
+                self.conn.close()
                 return
             else:
                 print("Error, wrong Choice, please enter again!")
