@@ -1,0 +1,37 @@
+[
+    {
+        "name": "The Entrance Hall",
+        "description": "A heavy, iron-bound door creaks open, revealing a dimly lit hall. Cobwebs drape from the ceiling, and the air is thick with the scent of decay. Torches flicker precariously in sconces along the walls, casting eerie shadows that dance and writhe. A narrow passage stretches out before you, leading deeper into the darkness.",
+        "choices": ["north","west"],
+        "riddle": {"question": "", "answer": ""},
+        "item": "Bottle of Wine"
+    },
+    {
+        "name": "The Treasury",
+        "description": "Piles of gold coins gleam in the soft light of a single, high window. A massive, iron chest sits in the center of the room, its ornate carvings hinting at ancient secrets. Dust motes dance in the air, disturbed by an unseen breeze. The walls are lined with shelves filled with priceless artifacts and magical tomes.",
+        "choices": ["north","west"],
+        "riddle": {"question": "", "answer": ""},
+        "item": "Bottle of Wine"
+    },
+    {
+        "name": "The Puzzle Chamber",
+        "description": "A complex series of levers, gears, and symbols adorns the walls of this room. A low hum emanates from a central pedestal, and the air is filled with the faint scent of ozone. The only way forward appears to be solving the intricate puzzle, but one false move could trigger a deadly trap.",
+        "choices": ["north","west"],
+        "riddle": {"question": "what is fast and blue?", "answer": "sonic"},
+        "item": ""
+    },
+    {
+        "name": "The Guardian's Lair",
+        "description": "A hulking, monstrous creature slumbers on a pile of bones. Its heavy breathing echoes through the chamber, and its sharp claws gleam menacingly in the darkness. The air is thick with the stench of blood and decay. A narrow passage leads deeper into the lair, promising further dangers.",
+        "choices": ["run"],
+        "riddle": {"question": "", "answer": ""},
+        "item": ""
+    },
+    {
+        "name": "The Final Chamber",
+        "description": "A towering, crystal-encrusted throne sits at the end of the chamber. A malevolent aura emanates from the throne, and the air shimmers with dark magic. The walls are adorned with strange symbols and runes, and a single, glowing orb floats above the throne. This is the heart of the dungeon, and the source of all the evil within.",
+        "choices": ["north","west"],
+        "riddle": {"question": "", "answer": ""},
+        "item": "Sack of Gold"
+    }
+]
