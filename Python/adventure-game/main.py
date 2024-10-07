@@ -10,7 +10,6 @@ def main():
     rooms.remove(rooms[0])
     
     while len(rooms) > 1:
-        pass
         # Ablauf
         # random index
         clear_console()
@@ -28,8 +27,8 @@ def main():
         # Ausgabe der Räume und abfrage zwischen 1-len auswahl
         
         # fängt von oben wieder an.
-    
-    enter_room(rooms[len(rooms-1)])
+    print(len(rooms))
+    enter_room(rooms[0])
     end_game()
     
     

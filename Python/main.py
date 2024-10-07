@@ -47,8 +47,18 @@
 # celsius_to_fahrenheit(10)
 # price_to_tax(10)
 
-x = range(1,5)
+# x = range(1,5)
 
 
-for y in x:
-    print(y)
+# for y in x:
+#     print(y)
+    
+room_name = [
+    ["einen Kerker", "Gitterstäbe", "eine rostige Eisentür"],
+    ["ein Atelier", "eingestaubte Bücherregale", "einen alten eingestaubten Schreibtisch"],
+    ["eine Höhle", "mit Ranken überwucherte Wände", "ein Rinsal aus Wasser an der Felswand"],
+]
+
+for rm in room_name:
+    for r in rm:
+        print(r)

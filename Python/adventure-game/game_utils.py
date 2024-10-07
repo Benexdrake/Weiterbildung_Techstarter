@@ -39,8 +39,8 @@ def enter_room(room):
 def solve_riddle(riddle):
     while True:
         answer = input(riddle["question"])
-        if answer.lower() in riddle["question"]:
-            print(f"Yes, the right Answer is: " + {riddle["answer"]})
+        if answer.lower() in str(riddle["answer"]):
+            print("Yes, the right Answer is: " + str(riddle["answer"]))
             break
 
 def start_game():
