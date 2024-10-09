@@ -2,3 +2,4 @@
 **.db
 zahlen.csv
 *.png
+!unterricht.db
