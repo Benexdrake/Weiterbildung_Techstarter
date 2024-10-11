@@ -55,7 +55,7 @@ class ItemDBContext:
         if amount == 0:
             amount = result[0][2]
             
-        self.db_context.execute(f"UPDATE ITEMS SET name = '{name}', price = {price}, amount = {amount}")
+        self.db_context.execute(f"UPDATE ITEMS SET name = '{name}', price = {price}, amount = {amount} where id = {id}")
             
     # D - Delete - DELETE
     def delete_item(self, id:int):
