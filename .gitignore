@@ -3,3 +3,4 @@
 zahlen.csv
 *.png
 !unterricht.db
+.env
