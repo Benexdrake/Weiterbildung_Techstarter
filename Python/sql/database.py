@@ -5,7 +5,7 @@ import os
 
 def execute(query):
     load_dotenv()
-
+    os.environ[""] = ""
     res = requests.post(os.getenv('database'),{'query': query, 'pw':os.getenv('pw')})
     response = json.loads(res.text)
     

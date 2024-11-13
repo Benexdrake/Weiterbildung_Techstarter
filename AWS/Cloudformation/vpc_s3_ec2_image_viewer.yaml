@@ -1,0 +1,165 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Cloudformation Script for basic VPC with public Subnet and a S3 Bucket with Policy to acces from Ec2 and a EC2 Instance with running Python ImageViewer Application
+
+Resources: 
+  ImageViewerVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/24
+      EnableDnsSupport: true
+
+  ImageViewerPublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref ImageViewerVPC
+      CidrBlock: 10.0.0.10/28
+
+  ImageViewerIGW:
+    Type: AWS::EC2::InternetGateway
+
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref ImageViewerVPC
+      InternetGatewayId: !Ref ImageViewerIGW
+
+  ImageViewerRT:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref ImageViewerVPC
+
+  ImageViewerRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref ImageViewerRT
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref ImageViewerIGW
+
+  routeTableAssocName:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref ImageViewerPublicSubnet
+      RouteTableId: !Ref ImageViewerRT
+
+  ImageViewerSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: ImageViewerSG
+      GroupDescription: Security group for Image Viewer app
+      VpcId: !Ref ImageViewerVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: "-1"
+          CidrIp: 0.0.0.0/0  
+
+  S3Bucket:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: !Sub "image-viewer-bucket-${AWS::AccountId}"
+
+  ImageViewerIAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: 
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [ec2.amazonaws.com]
+            Action: sts:AssumeRole
+      Policies:
+        - 
+         PolicyName: S3-Read-Access
+         PolicyDocument:
+           Version: "2012-10-17"
+           Statement:
+              - Effect: Allow
+                Action: 
+                  - s3:ListBucket
+                  - s3:GetObject
+                Resource: 
+                  - !GetAtt S3Bucket.Arn
+                  - !Sub '${S3Bucket.Arn}/*'
+
+  iamInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - !Ref ImageViewerIAMRole
+
+  ImageViewerEC2:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-0084a47cc718c111a
+      KeyName: aws_key_putty
+      InstanceType: t2.micro
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: true
+          DeviceIndex: "0"
+          SubnetId: !Ref ImageViewerPublicSubnet
+          GroupSet:
+            - !Ref ImageViewerSG
+      UserData:
+        Fn::Base64:
+          !Sub |
+            #!/bin/bash
+            export S3_BUCKET_NAME=$(!Ref S3Bucket)
+            sudo apt update
+
+            sudo apt install python3 -y
+            sudo apt install python3-pip -y
+
+            sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            sudo unzip awscliv2.zip
+            sudo ./aws/install
+
+            cd /var
+            git clone https://github.com/marcolindner/image-viewer app
+            sudo chown ubuntu:ubuntu app
+            cd app
+
+            echo "S3_BUCKET_NAME=${S3Bucket}" > .env
+
+            pip3 install -r requirements.txt --break-system-packages
+
+            sudo apt install nginx -y
+
+            ip=$(curl ifconfig.me)
+
+            sudo echo "server { listen 80; server_name $ip; location / { proxy_pass http://127.0.0.1:8000; } }" > /etc/nginx/sites-enabled/fastapi_nginx
+            sudo system restart nginx
+
+            sudo echo "#!/bin/bash" >> start.sh
+            sudo echo "python3 -m uvicorn main:app" >> start.sh
+            sudo chmod +x start.sh
+
+            sudo echo "[Unit]" >> /etc/systemd/system/image_viewer.service
+            sudo echo "Description=Basic Webserver" >> /etc/systemd/system/image_viewer.service
+            sudo echo "[Service]" >> /etc/systemd/system/image_viewer.service
+            sudo echo "WorkingDirectory=/var/app" >> /etc/systemd/system/image_viewer.service
+            sudo echo "ExecStart=bash start.sh" >> /etc/systemd/system/image_viewer.service
+            sudo echo "Restart=always" >> /etc/systemd/system/image_viewer.service
+            sudo echo "User=ubuntu" >> /etc/systemd/system/image_viewer.service
+            sudo echo "Group=ubuntu" >> /etc/systemd/system/image_viewer.service
+            sudo echo "[Install]" >> /etc/systemd/system/image_viewer.service
+            sudo echo "WantedBy=multi-user.service" >> /etc/systemd/system/image_viewer.service
+
+            sudo systemctl daemon-reexec
+            sudo systemctl enable image_viewer
+            sudo systemctl start image_viewer
+            sudo systemctl restart nginx
+            sudo apt upgrade -y
+
+    
+Outputs: 
+  S3BucketName: 
+    Description: Information about the value
+    Value: !Ref S3Bucket
